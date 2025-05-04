@@ -1,3 +1,10 @@
+h1,
+h2,
+h3,
+h4 {
+	margin: 0;
+}
+
 body {
 	display: grid;
 	grid-template-rows: 1fr 5fr 50px;
@@ -9,6 +16,7 @@ body {
 	--dark-grey: #242423;
 	--light-grey: #3d3d3c;
 	--blue: #215eb4;
+	--book: #8a5b2b;
 }
 
 header {
@@ -17,18 +25,18 @@ header {
 	align-items: center;
 	background-color: var(--blue);
 	color: white;
-}
 
-header H1 {
-	color: inherit;
-	font-size: 4rem;
-	font-weight: 800;
-	text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+	H1 {
+		color: inherit;
+		font-size: 4rem;
+		font-weight: 800;
+		text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+	}
 }
 
 main {
 	display: grid;
-	grid-template-rows: 1fr 5fr;
+	grid-template-rows: 150px 1fr;
 	background-color: var(--light-grey);
 }
 
@@ -40,6 +48,7 @@ main button {
 	align-items: center;
 	gap: 1rem;
 	width: 300px;
+	height: 100px;
 	background-color: var(--dark-grey);
 	border: none;
 	border-radius: 1rem;
@@ -65,15 +74,78 @@ main button {
 	}
 }
 
+#book-container {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, 200px);
+	gap: 20px;
+	height: 100%;
+	padding: 10px 10%;
+	box-sizing: border-box;
+	justify-content: center;
+}
+
+.book {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	height: 300px;
+	width: 200px;
+	box-sizing: border-box;
+	padding: 20px 10px;
+	background-color: var(--book);
+	border-radius: 5px;
+	box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+	overflow: visible;
+	color: white;
+	position: relative;
+
+	h1 {
+		font-size: 1.5rem;
+		text-align: center;
+	}
+
+	h2,
+	h3,
+	h4 {
+		font-size: 1rem;
+		text-align: center;
+		padding-top: 10px;
+	}
+
+	h4 {
+		cursor: pointer;
+	}
+
+	.info1,
+	.info2 {
+		width: 100%;
+		overflow: hidden;
+	}
+
+	.delete {
+		position: absolute;
+		top: -20px;
+		right: 20px;
+		cursor: pointer;
+		svg {
+			position: absolute;
+			height: 40px;
+			width: 40px;
+			fill: rgb(158, 28, 28);
+		}
+	}
+}
+
 footer {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	background-color: var(--dark-grey);
 	color: white;
-}
 
-footer H4 {
-	color: inherit;
-	font-size: 1rem;
+	H4 {
+		color: inherit;
+		font-size: 1rem;
+	}
 }
