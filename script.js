@@ -1,4 +1,9 @@
 const myLibrary = []
+const bookContainer = document.getElementById("book-container")
+const closeModal = document.getElementById("close-modal")
+const newBookButton = document.getElementById("New-Book")
+const dialog = document.getElementById("dialog")
+const form = dialog.querySelector("form")
 
 function Book(title, author, pages, read) {
 	// book constructor (title, author, number of pages, read, rUUID)
@@ -10,15 +15,13 @@ function Book(title, author, pages, read) {
 }
 
 function addBookToLibrary(title, author, pages, read) {
-	// take params, create a book then store it in the array
+	// take params, create book and store in myLibrary
 	const book = new Book(title, author, pages, read)
 	myLibrary.push(book)
 }
 
-const bookContainer = document.getElementById("book-container")
-
 function createLibrary() {
-	// loops library array and creates book on page
+	// loop myLibrary and create books on page
 	bookContainer.innerHTML = ""
 
 	myLibrary.forEach((element) => {
@@ -26,22 +29,31 @@ function createLibrary() {
 	})
 }
 
-const newBookButton = document.getElementById("New-Book")
-
 newBookButton.addEventListener("click", function () {
-	// Prompt book info and add book to library
-	const title = prompt("Book title:")
-	const author = prompt("Author name:")
-	const pages = prompt("Amount of pages:") + " pages"
-	const readStatus = prompt("Did you finish it?")
-	const read = readStatus == true ? "Finished" : "Not Finished"
+	dialog.showModal()
+})
 
-	addBookToLibrary(title, author, pages, read)
+closeModal.addEventListener("click", function () {
+	dialog.close()
+	form.reset()
+})
+
+form.addEventListener("submit", function (event) {
+	// submit form and add book to myLibrary
+	event.preventDefault()
+
+	const formData = new FormData(form)
+
+	const read = formData.get("read") == "on" ? "Finished" : "Not Finished"
+
+	addBookToLibrary(formData.get("title"), formData.get("author"), formData.get("pages"), read)
+	dialog.close()
+	form.reset()
 	createLibrary()
 })
 
 function createBook(title, author, pages, read) {
-	// create a book inside the book-container in html
+	// create book on page
 	const book = document.createElement("div")
 	book.className = "book"
 
@@ -64,6 +76,8 @@ function createBook(title, author, pages, read) {
 	bookContainer.appendChild(book)
 }
 
-// testing
-addBookToLibrary("Harry Potter", "J.K Rowling", "700 pages", false)
+// Testing books
+addBookToLibrary("Harry Potter and the Order of the Phoenix", "J.K Rowling", "700 pages", "Finished")
+addBookToLibrary("The Great Gatsby", "F. Scott Fitzgerald", "800 pages", "Finished")
+addBookToLibrary("To Kill a Mockingbird", "H. Lee", "690 pages", "Finished")
 createLibrary()
