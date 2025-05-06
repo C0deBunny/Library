@@ -4,6 +4,7 @@ const closeModal = document.getElementById("close-modal")
 const newBookButton = document.getElementById("New-Book")
 const dialog = document.getElementById("dialog")
 const form = dialog.querySelector("form")
+const removeBook = document.querySelectorAll(".delete")
 
 function Book(title, author, pages, read) {
 	// book constructor (title, author, number of pages, read, rUUID)
@@ -25,7 +26,7 @@ function createLibrary() {
 	bookContainer.innerHTML = ""
 
 	myLibrary.forEach((element) => {
-		createBook(element.title, element.author, element.pages, element.read)
+		createBook(element.title, element.author, element.pages, element.read, element.rUUID)
 	})
 }
 
@@ -52,7 +53,7 @@ form.addEventListener("submit", function (event) {
 	createLibrary()
 })
 
-function createBook(title, author, pages, read) {
+function createBook(title, author, pages, read, rUUID) {
 	// create book on page
 	const book = document.createElement("div")
 	book.className = "book"
@@ -71,9 +72,23 @@ function createBook(title, author, pages, read) {
 	cross.className = "delete"
 	cross.innerHTML =
 		'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>close-thick</title><path d="M20 6.91L17.09 4L12 9.09L6.91 4L4 6.91L9.09 12L4 17.09L6.91 20L12 14.91L17.09 20L20 17.09L14.91 12L20 6.91Z" /></svg>'
+	cross.dataset.id = rUUID
 	book.appendChild(cross)
 
+	cross.addEventListener("click", function () {
+		// get id and remove book from library
+		removeBookFromLibrary(this.dataset.id)
+	})
+
 	bookContainer.appendChild(book)
+}
+
+function removeBookFromLibrary(id) {
+	const index = myLibrary.findIndex((book) => book.rUUID === id)
+	if (index !== -1) {
+		myLibrary.splice(index, 1)
+	}
+	createLibrary()
 }
 
 // Testing books
