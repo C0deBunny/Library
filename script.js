@@ -15,6 +15,11 @@ function Book(title, author, pages, read) {
 	this.rUUID = crypto.randomUUID()
 }
 
+Book.prototype.toggleRead = function () {
+	// Add method to Books: Toggle read state
+	this.read = this.read == "Finished" ? "Not Finished" : "Finished"
+}
+
 function addBookToLibrary(title, author, pages, read) {
 	// take params, create book and store in myLibrary
 	const book = new Book(title, author, pages, read)
@@ -25,9 +30,7 @@ function createLibrary() {
 	// loop myLibrary and create books on page
 	bookContainer.innerHTML = ""
 
-	myLibrary.forEach((element) => {
-		createBook(element.title, element.author, element.pages, element.read, element.rUUID)
-	})
+	myLibrary.forEach((book) => createBook(book))
 }
 
 newBookButton.addEventListener("click", function () {
@@ -53,8 +56,10 @@ form.addEventListener("submit", function (event) {
 	createLibrary()
 })
 
-function createBook(title, author, pages, read, rUUID) {
+function createBook(bookObj) {
 	// create book on page
+	const { title, author, pages, read, rUUID } = bookObj
+
 	const book = document.createElement("div")
 	book.className = "book"
 
@@ -65,8 +70,17 @@ function createBook(title, author, pages, read, rUUID) {
 
 	const info2 = document.createElement("div")
 	info2.className = "info2"
-	info2.innerHTML = `<h3>${pages}</h3><h4>${read}</h4>`
+	info2.innerHTML = `<h3>${pages}</h3>`
 	book.appendChild(info2)
+
+	const bookStatus = document.createElement("h4")
+	bookStatus.textContent = read
+	info2.appendChild(bookStatus)
+
+	bookStatus.addEventListener("click", function () {
+		bookObj.toggleRead()
+		this.textContent = bookObj.read
+	})
 
 	const cross = document.createElement("div")
 	cross.className = "delete"
