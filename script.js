@@ -6,18 +6,18 @@ const dialog = document.getElementById("dialog")
 const form = dialog.querySelector("form")
 const removeBook = document.querySelectorAll(".delete")
 
-function Book(title, author, pages, read) {
-	// book constructor (title, author, number of pages, read, rUUID)
-	this.title = title
-	this.author = author
-	this.pages = pages
-	this.read = read
-	this.rUUID = crypto.randomUUID()
-}
+class Book {
+	constructor(title, author, pages, read) {
+		this.title = title
+		this.author = author
+		this.pages = pages
+		this.read = read
+		this.rUUID = crypto.randomUUID()
+	}
 
-Book.prototype.toggleRead = function () {
-	// Add method to Books: Toggle read state
-	this.read = this.read == "Finished" ? "Not Finished" : "Finished"
+	toggleRead() {
+		this.read = this.read == "Finished" ? "Not Finished" : "Finished"
+	}
 }
 
 function addBookToLibrary(title, author, pages, read) {
@@ -26,23 +26,22 @@ function addBookToLibrary(title, author, pages, read) {
 	myLibrary.push(book)
 }
 
-function createLibrary() {
+function updateLibrary() {
 	// loop myLibrary and create books on page
-	bookContainer.innerHTML = ""
+	const EMPTY = ""
+	bookContainer.innerHTML = EMPTY
 
 	myLibrary.forEach((book) => createBook(book))
 }
 
-newBookButton.addEventListener("click", function () {
-	dialog.showModal()
-})
+newBookButton.addEventListener("click", () => dialog.showModal())
 
-closeModal.addEventListener("click", function () {
+closeModal.addEventListener("click", () => {
 	dialog.close()
 	form.reset()
 })
 
-form.addEventListener("submit", function (event) {
+form.addEventListener("submit", (event) => {
 	// submit form and add book to myLibrary
 	event.preventDefault()
 
@@ -53,7 +52,7 @@ form.addEventListener("submit", function (event) {
 	addBookToLibrary(formData.get("title"), formData.get("author"), formData.get("pages"), read)
 	dialog.close()
 	form.reset()
-	createLibrary()
+	updateLibrary()
 })
 
 function createBook(bookObj) {
@@ -102,11 +101,11 @@ function removeBookFromLibrary(id) {
 	if (index !== -1) {
 		myLibrary.splice(index, 1)
 	}
-	createLibrary()
+	updateLibrary()
 }
 
 // Testing books
 addBookToLibrary("Harry Potter and the Order of the Phoenix", "J.K Rowling", "700 pages", "Finished")
 addBookToLibrary("The Great Gatsby", "F. Scott Fitzgerald", "800 pages", "Finished")
 addBookToLibrary("To Kill a Mockingbird", "H. Lee", "690 pages", "Finished")
-createLibrary()
+updateLibrary()
